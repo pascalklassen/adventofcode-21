@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 namespace aoc
 {
@@ -22,12 +23,29 @@ namespace aoc
     };
 
     template <typename T>
+    bool is_empty(linked_list<T>* list);
+
+    template <typename T>
+    T& value_at(linked_list<T>* list, int index);
+
+    template <typename T>
+    void push_back(linked_list<T>*& list, T value); 
+
+    void split(std::string input, std::string& l_result, std::string& r_result, char delimiter = ' ');
+
+    inline void print_blank();
+    void print(std::string text, int margin = 0);
+    void printm(std::string text);
+
+    void print_logo();
+
+    template <typename T>
     bool is_empty(linked_list<T>* list)
     {
         return list->size == 0;
     }
 
-    template <typename T> 
+    template <typename T>
     T& value_at(linked_list<T>* list, int index)
     {
         if (index >= 0 && index < list->size)
@@ -69,26 +87,23 @@ namespace aoc
         }
     }
 
-    inline void print_blank();
-    void print(std::string text, int margin = 0);
-    void printm(std::string text);
+    void split(std::string input, std::string& l_result, std::string& r_result, char delimiter)
+    {
+        // "Hello, World"
+        unsigned int split_pos = 0;
+        for (int i = 0; i < input.length() && input.at(i) != delimiter; i++)
+            split_pos = i + 1;
 
-    void print_logo();
+        for (int i = 0; i < split_pos; i++)
+            l_result += input.at(i);
+
+        for (int i = split_pos + 1; i < input.length(); i++)
+            r_result += input.at(i);
+    }
 
     inline void print_blank()
     {
         std::cout << "\n";
-    }
-
-    void print_logo()
-    {
-        print_blank();
-        printm("  ^~^  ,                           \n");
-        printm(" ('Y') )                           \n");
-        printm(" /   \/  Advent of Code 2021  __QQ \n");
-        printm("(\|||/)                      (_)_\">\n");
-        printm("                            /      \n");
-        print_blank();
     }
 
     void print(std::string text, int margin)
@@ -104,5 +119,16 @@ namespace aoc
     void printm(std::string text)
     {
         print(text, margin_size);
+    }
+
+    void print_logo()
+    {
+        print_blank();
+        printm("  ^~^  ,                           \n");
+        printm(" ('Y') )                           \n");
+        printm(" /   \/  Advent of Code 2021  __QQ \n");
+        printm("(\|||/)                      (_)_\">\n");
+        printm("                            /      \n");
+        print_blank();
     }
 }

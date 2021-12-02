@@ -1,70 +1,67 @@
-#include <iostream>
 #include <fstream>
-#include <string>
+#include <iostream>
 
 #include <aoc.h>
 
 int solve_part1(std::ifstream& input)
 {
-    unsigned int inc_count = 0;
-    int prev_depth = 0;
+    int depth = 0;
+    int x_pos = 0;
 
     std::string line;
     while (std::getline(input, line))
     {
-        int depth = std::stoi(line);
+        std::string command;
+        std::string str_value;
+        int value = 0;
 
-        if (prev_depth == 0)
-        {
-            prev_depth = depth;
-        }
+        aoc::split(line, command, str_value);
+        value = std::stoi(str_value);
 
-        if (depth > prev_depth)
-        {
-            inc_count++;
-        }
-
-        prev_depth = depth;
+        if (command == "forward")
+            x_pos += value;
+        else if (command == "up")
+            depth -= value;
+        else if (command == "down")
+            depth += value;
     }
 
-    return inc_count;
+    return x_pos * depth;
 }
 
 int solve_part2(std::ifstream& input)
 {
-    aoc::linked_list<int>* depths = new aoc::linked_list<int>;
-
-    unsigned int inc_count = 0;
-    int prev_sum = 0;
+    int depth = 0;
+    int x_pos = 0;
+    int aim = 0;
 
     std::string line;
     while (std::getline(input, line))
     {
-        int depth = std::stoi(line);
-        aoc::push_back(depths, depth);
+        std::string command;
+        std::string str_value;
+        int value = 0;
+
+        aoc::split(line, command, str_value);
+        value = std::stoi(str_value);
+
+        if (command == "forward")
+        {
+            x_pos += value; 
+            depth += aim * value;
+        }
+        else if (command == "up")
+        {
+            aim -= value;
+        }
+        else if (command == "down")
+        {
+            aim += value;
+        }
+            
     }
 
-    for (int i = 0; i < depths->size - 2; i++)
-    {
-        int sum = 
-            aoc::value_at(depths, i) + 
-            aoc::value_at(depths, i + 1) + 
-            aoc::value_at(depths, i + 2);
-
-        if (prev_sum == 0)
-        {
-            prev_sum = sum;
-        }
-
-        if (sum > prev_sum)
-        {
-            inc_count++;
-        }
-
-        prev_sum = sum;
-    }
-
-    return inc_count;
+    return x_pos * depth;
 }
 
 int main()
@@ -90,6 +87,6 @@ int main()
 
     input.close();
     test_input.close();
-
+    
     return 0;
 }
